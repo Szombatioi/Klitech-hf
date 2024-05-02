@@ -1,1 +1,52 @@
-<p>dictionary works!</p>
+<div class="container">
+    <div class="row mb-1">
+        <div class="col-md-6">
+            <input placeholder="Enter text" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <select class="form-select">
+                <option *ngFor="let t of types" value="t">{{t}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary">Find</button>
+        </div>
+    </div>
+
+    <!-- TODO: Sections -->
+    
+    <div *ngFor="let t of types" class="section">
+        <div *ngIf="true" class="border rounded m-1"> <!--todo: add ngif condition-->
+            <h3 class="mb-5">{{t}}</h3>
+        </div>
+    </div>
+    
+    <!--
+    Antonyms
+    Examples
+    Rhymes
+    Frequency
+    Is A Type Of
+    Has Types
+    Part Of
+    Has Parts
+    Is An Instance Of
+    Has Instances
+    In Region
+    Region Of
+    Usage Of
+    Has Usages
+    Is A Member Of
+    Has Members
+    Is A Substance Of
+    Has Substances
+    Has Attribute
+    In Category
+    Has Categories
+    Also
+    Pertains To
+    Similar To
+    Entails -->
+</div>

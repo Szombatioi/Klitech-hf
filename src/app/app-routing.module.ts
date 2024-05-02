@@ -3,9 +3,12 @@ import { Route, Router, RouterModule, Routes } from '@angular/router';
 import { HistoryComponent } from './components/history/history.component';
 import { DictionaryComponent } from './components/dictionary/dictionary.component';
 import { TranslatorComponent } from './components/translator/translator.component';
-import { HttpCommunicationService } from './services/http-communication.service';
+import { TranslatorService } from './services/translator.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { BrowserModule } from '@angular/platform-browser';
+import { MainComponent } from './main-component/main-component.component';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 const routes: Route[] = [
   { path: 'translator', component: TranslatorComponent },
@@ -14,9 +17,9 @@ const routes: Route[] = [
 ];
 
 @NgModule({
-  imports: [BrowserModule, RouterModule.forRoot(routes)],
-  declarations: [HistoryComponent, TranslatorComponent, DictionaryComponent, NavbarComponent],
+  imports: [BrowserModule, RouterModule.forRoot(routes), HttpClientModule, FormsModule],
+  declarations: [MainComponent, HistoryComponent, TranslatorComponent, DictionaryComponent, NavbarComponent],
   exports: [RouterModule],
-  bootstrap: [TranslatorComponent]
+  bootstrap: [MainComponent]
 })
 export class AppRoutingModule { }
