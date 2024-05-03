@@ -12,24 +12,32 @@ import { Languages } from '../../models/languages.model';
   providers: [TranslatorService]
 })
 export class TranslatorComponent implements OnInit{
-  
+  constructor(private translatorService: TranslatorService){
+    this.fullLanguageNames = this.translatorService.languageMap;
+  }
 
   ngOnInit() : void{
     this.languages = this.translatorService.getLanguages();
     this.languages.subscribe(
-      langs => this.selectedSource = langs.languages[0]
+      langs => {
+        this.selectedSource = langs.languages[0];
+        this.selectedDestination = langs.languages[0];
+      }
     )
   }
   
-  languages: Observable<Languages> | undefined;
+  languages: Observable<Languages>;
   fullLanguageNames: Map<string, string>;
-  selectedSource: Language | undefined;
-  selectedDestination: Language | undefined;
+  selectedSource: Language;
+  selectedDestination: Language;
 
-  constructor(private translatorService: TranslatorService){this.fullLanguageNames = this.translatorService.languageMap;}
   
   getLanguageName(l: string){
     return this.fullLanguageNames.get(l);
+  }
+
+  translateWordTo(){
+
   }
   // selectChanged(lang: Language){
     

@@ -2,18 +2,13 @@
 
 <!-- <p *ngFor="let l of (languages | async)?.languages">{{l.source}}</p> -->
 
-<div class="container">
-    <div class="row mb-1">
+<div class="container my-2">
+    <div class="row mb-2">
         <div class="col-lg-6 col-md-6 col-sm-10 mx-auto">
             <select [(ngModel)]="selectedSource" class="form-select" aria-label="">
                 <option *ngFor="let l of (languages | async)?.languages" value="{{l.source}}">{{getLanguageName(l.source)}}</option>
             </select>
         </div>
-        <!-- <div class="col-md-1">
-            <button class="btn m-0">
-                <img src="../../../assets/switch.png" alt=""/>
-            </button>
-        </div> -->
         <div class="col-lg-6 col-md-6 col-sm-10 mx-auto">
             <select [(ngModel)]="selectedDestination" class="form-select" aria-label="">
                 <option *ngFor="let l of selectedSource?.destinations" value="{{l}}">{{getLanguageName(l)}}</option> <!--todo-->
@@ -21,13 +16,17 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-2">
         <div class="col-md-6">
             <textarea class="form-control" rows="6" aria-label="With textarea"></textarea>
         </div>
-        <!-- <div class="col-md-1"></div> -->
         <div class="col-md-6">
             <textarea class="form-control" rows="6" aria-label="With textarea"></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button (click)="translateWordTo()" class="btn btn-primary">Translate</button>
         </div>
     </div>
 </div>

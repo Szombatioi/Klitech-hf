@@ -6,6 +6,7 @@
             <th scope="col">Word</th>
             <th scope="col">Results</th>
             <th scope="col">Date</th>
+            <th scope="col">Delete</th>
         </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
                 <td *ngIf="ind === 0" rowspan="3">"word"</td>
                 <td>Result {{i}}</td>
                 <td *ngIf="ind === 0" rowspan="3">"date"</td>
+                <td *ngIf="ind === 0" rowspan="3"><button>Delete</button></td>
             </tr>
         </ng-container>
       </tbody>
