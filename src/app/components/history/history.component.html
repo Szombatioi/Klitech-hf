@@ -1,1 +1,22 @@
-<p>history works!</p>
+<table class="table m-2 table-bordered table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Type</th>
+            <th scope="col">Word</th>
+            <th scope="col">Results</th>
+            <th scope="col">Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <ng-container *ngFor="let x of [1,2,3]">
+            <tr *ngFor="let i of [1,2,3]; let ind = index;">
+                <th *ngIf="ind === 0" rowspan="3" scope="col">1</th>
+                <td *ngIf="ind === 0" rowspan="3">"type"</td>
+                <td *ngIf="ind === 0" rowspan="3">"word"</td>
+                <td>Result {{i}}</td>
+                <td *ngIf="ind === 0" rowspan="3">"date"</td>
+            </tr>
+        </ng-container>
+      </tbody>
+</table>

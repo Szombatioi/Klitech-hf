@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { DictionaryService } from '../../services/dictionary.service';
+import { DictionaryElement } from '../../models/dictionaryElement.model';
 
 @Component({
   selector: 'app-dictionary',
   templateUrl: './dictionary.component.html',
+  styleUrl: './dictionary.component.css',
 })
 export class DictionaryComponent {
   types: string[] = [
@@ -36,7 +38,20 @@ export class DictionaryComponent {
     "Similar To",
     "Entails",
   ];
-  constructor(private dictionaryService: DictionaryService) {
-    this.dictionaryService.getWordInfo("example");
+  dictionaryElement: DictionaryElement;
+  word: string = '';
+  constructor(private dictionaryService: DictionaryService) {}
+  
+
+  lookUpWord(){
+    this.dictionaryService.getWordInfo(this.word).subscribe(
+      res => {
+        this.dictionaryElement = res;
+        this.dictionaryElement.results.forEach(r => {
+          r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
+        });
+      }
+    );
+    
   }
 }
