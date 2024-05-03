@@ -10,14 +10,16 @@
         </tr>
     </thead>
     <tbody>
-        <ng-container *ngFor="let x of [1,2,3]">
-            <tr *ngFor="let i of [1,2,3]; let ind = index;">
-                <th *ngIf="ind === 0" rowspan="3" scope="col">1</th>
-                <td *ngIf="ind === 0" rowspan="3">"type"</td>
-                <td *ngIf="ind === 0" rowspan="3">"word"</td>
-                <td>Result {{i}}</td>
-                <td *ngIf="ind === 0" rowspan="3">"date"</td>
-                <td *ngIf="ind === 0" rowspan="3"><button>Delete</button></td>
+        <ng-container *ngFor="let h of historyElements; let x = index">
+            <tr *ngFor="let word of h.results; let i = index;">
+                <th *ngIf="i === 0" rowspan="h.results.length" scope="col">{{x}}</th>
+                <td *ngIf="i === 0" rowspan="h.results.length">{{h.type}}</td>
+                <td *ngIf="i === 0" rowspan="h.results.length">{{h.word}}</td>
+                <td>word</td> <!--TODO-->
+                <td *ngIf="i === 0" rowspan="h.results.length">{{formatDate(h.date)}}</td>
+                <td *ngIf="i === 0" rowspan="h.results.length">
+                    <button (click)="removeHistoryElement(h)" class="btn"><img src="../../../assets/trash.svg" alt=""/></button>
+                </td>
             </tr>
         </ng-container>
       </tbody>

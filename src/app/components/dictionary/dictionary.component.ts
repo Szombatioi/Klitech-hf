@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { DictionaryService } from '../../services/dictionary.service';
 import { DictionaryElement } from '../../models/dictionaryElement.model';
+import { HistoryService } from '../../services/history.service';
+import { HistoryElement } from '../../models/history.model';
 
 @Component({
   selector: 'app-dictionary',
@@ -40,7 +42,7 @@ export class DictionaryComponent {
   ];
   dictionaryElement: DictionaryElement;
   word: string = '';
-  constructor(private dictionaryService: DictionaryService) {}
+  constructor(private historyService: HistoryService, private dictionaryService: DictionaryService) {}
   
 
   lookUpWord(){
@@ -50,6 +52,12 @@ export class DictionaryComponent {
         this.dictionaryElement.results.forEach(r => {
           r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
         });
+
+        this.historyService.saveHistory(new HistoryElement(
+          "Dictionary lookup",
+          this.word,
+          [res.results[0].definition],
+        ));
       }
     );
     

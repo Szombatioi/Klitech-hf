@@ -21,4 +21,12 @@ export class HistoryComponent implements OnInit{
   clearHistory() { 
     this.historyService.clearHistory();
    }
+
+   formatDate(d: Date): string{
+    return new Date(d).toLocaleDateString();
+   }
+
+   removeHistoryElement(h: HistoryElement){
+    this.historyService.deleteHistoryElement(h);
+   }
 }
