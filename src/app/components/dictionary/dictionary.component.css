@@ -1,9 +1,12 @@
-.definition{
-    margin-left: 1rem;
-    border-left: 3px solid red;
-    padding: .25rem;
+mark{
+    background-color: #BBBBBB;
+    border-radius: .5rem;
 }
 
 .result{
     margin-left: .5rem;
+}
+
+h5{
+    margin-top: 1rem;
 }

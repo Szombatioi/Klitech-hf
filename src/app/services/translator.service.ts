@@ -5,6 +5,8 @@ import { Language } from '../models/language.model';
 import { catchError, map } from 'rxjs/operators';
 import { Languages } from '../models/languages.model';
 import { TranslatorResult } from '../models/translatorResult.model';
+import { HistoryService } from './history.service';
+import { HistoryElement } from '../models/history.model';
 
 
 @Injectable({
@@ -12,7 +14,7 @@ import { TranslatorResult } from '../models/translatorResult.model';
 })
 export class TranslatorService {
   private API_key: string = "dict.1.1.20240501T113006Z.b74d50b389299474.1a4aa48b11edb7e6d89d2838e22e28bb70abf79a";
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private historyService: HistoryService) { }
 
   public languageMap: Map<string, string> = new Map<string, string>([
     ["be", "Belarusian"],
@@ -73,5 +75,14 @@ export class TranslatorService {
 
   translate(word: string, from: string, to: string) : Observable<TranslatorResult> {
     return this.http.get<TranslatorResult>(`https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${this.API_key}&lang=${from}-${to}&text=${word}`);
+  }
+
+  saveHistory(word: string, result: string){
+    this.historyService.saveHistory(new HistoryElement(
+      "Translation",
+      word,
+      result,
+    ));
+    console.log("Saved translation");
   }
 }

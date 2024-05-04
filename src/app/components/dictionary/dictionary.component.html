@@ -1,136 +1,229 @@
 <div class="container p-2">
-    <div class="row">
-        <div class="col-md-4">
-            <div class="row mb-1">
-                <input type="text" [(ngModel)]="word" placeholder="Enter text" class="form-control" />
-                <select class="form-select">
-                    <option *ngFor="let t of types" value="t">{{t}}</option>
-                </select>
-            </div>
-            <div class="row">
-                <button (click)="lookUpWord()" class="btn btn-primary">Find</button>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <!-- <div *ngFor="let t of types; let i = index" class="section">
-                <div *ngIf="i!==0 && true" class="border rounded m-1"> 
-                    <h3 class="mb-2">{{t}}</h3>
-                </div>
-            </div> -->
-            <div *ngIf="dictionaryElement">
-                <div *ngIf="dictionaryElement.word" class="border rounded p-2 m-2">
-                    <h3>Word: {{dictionaryElement.word}}</h3>
-                    <span *ngIf="dictionaryElement.syllables">
-                        <h5>Syllables</h5>
-                        <ul>
-                            <li *ngFor="let s of dictionaryElement.syllables.list">{{s}}</li>
-                        </ul>
-                    </span>
-                    <span *ngIf="dictionaryElement.pronunciation">
-                        <h5>Pronunciation</h5>
-                        {{dictionaryElement.pronunciation.all}}
-                    </span>
-                    <span *ngIf="dictionaryElement.frequency">
-                        <h5>Frequency</h5>
-                        {{dictionaryElement.frequency}}
-                    </span>
-                </div>
-                <div *ngIf="dictionaryElement.results.length !== 0">
-                    <div *ngFor="let r of dictionaryElement.results; let i = index;" class="border rounded p-2 m-2">
-                        <h4>Result {{i+1}}</h4> 
-                        
-                        <h5>Definition: </h5>
-                        <span class="definition">{{r.definition}}</span><br>
-                        <b>Part of speech: </b> {{r.partOfSpeech}}
-                        
-                        <h5>Synonmyms</h5>
-                        <ul>
-                            <li *ngFor="let s of r.synonyms">{{s}}</li>
-                        </ul>
-                        <h5>Type Of</h5>
-                        <ul>
-                            <li *ngFor="let s of r.typeOf">{{s}}</li>
-                        </ul>
-
-                        <h5>Has Types</h5>
-                        <ul *ngIf="r.hasTypes">
-                            <li *ngFor="let s of r.hasTypes">{{s}}</li>
-                        </ul>
-                        <span *ngIf="!r.hasTypes">No results</span>
-
-                        <h5>Derivation</h5>
-                        <ul *ngIf="r.derivation">
-                            <li *ngFor="let s of r.derivation">{{s}}</li>
-                        </ul>
-                        <span *ngIf="!r.derivation">No results</span>
-
-                        <h5>Examples</h5>
-                        <ul *ngIf="r.examples">
-                            <li *ngFor="let s of r.examples">{{s}}</li>
-                        </ul>
-                        <span *ngIf="!r.examples">No results</span>
-                    </div>
-                </div>
-            </div>
-                
-                <!-- Antonyms
-                Examples
-                Rhymes
-                Frequency
-                Is A Type Of
-                Has Types
-                Part Of
-                Has Parts
-                Is An Instance Of
-                Has Instances
-                In Region
-                Region Of
-                Usage Of
-                Has Usages
-                Is A Member Of
-                Has Members
-                Is A Substance Of
-                Has Substances
-                Has Attribute
-                In Category
-                Has Categories
-                Also
-                Pertains To
-                Similar To
-                Entails -->
-
-        </div>
+  <div class="row">
+    <div class="col-md-6">
+      <input
+        type="text"
+        [(ngModel)]="word"
+        placeholder="Enter text"
+        class="form-control"
+      />
     </div>
-    
+    <div class="col-md-6">
+      <select [(ngModel)]="type" class="form-select">
+        <option selected *ngFor="let t of getOptions()" value="t">
+          {{ t }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <button (click)="lookUpWord()" class="btn btn-primary">Find</button>
+    </div>
+  </div>
 
-    <!-- TODO: Sections -->
-    
-    
-    
-    <!--
-    Antonyms
-    Examples
-    Rhymes
-    Frequency
-    Is A Type Of
-    Has Types
-    Part Of
-    Has Parts
-    Is An Instance Of
-    Has Instances
-    In Region
-    Region Of
-    Usage Of
-    Has Usages
-    Is A Member Of
-    Has Members
-    Is A Substance Of
-    Has Substances
-    Has Attribute
-    In Category
-    Has Categories
-    Also
-    Pertains To
-    Similar To
-    Entails -->
+  <div class="row">
+    <div *ngIf="dictionaryElement">
+      <div *ngIf="dictionaryElement.word" class="border rounded p-2 m-2">
+        <h3>Word: {{ dictionaryElement.word }}</h3>
+        <span *ngIf="dictionaryElement.syllables">
+          <h5>Syllables</h5>
+          <ul>
+            <li *ngFor="let s of dictionaryElement.syllables.list">{{ s }}</li>
+          </ul>
+        </span>
+        <span *ngIf="dictionaryElement.pronunciation">
+          <h5>
+            Pronunciation:
+            <mark>{{ dictionaryElement.pronunciation.all }}</mark>
+          </h5>
+        </span>
+        <span *ngIf="dictionaryElement.frequency">
+          <h5>
+            Frequency: <mark>{{ dictionaryElement.frequency }}</mark>
+          </h5>
+        </span>
+      </div>
+
+      <!--Eredmények-->
+      <div *ngIf="dictionaryElement.results && dictionaryElement.results.length !== 0">
+        <div
+          *ngFor="let r of dictionaryElement.results; let i = index"
+          class="border rounded p-2 m-2"
+        >
+          <h4>Result {{ i + 1 }}</h4>
+
+          <h5>Definition:</h5>
+          <mark>{{ r.definition }}</mark
+          ><br />
+          <b>Part of speech: </b> {{ r.partOfSpeech }}
+
+          <div *ngIf="r.synonyms && r.synonyms.length > 0">
+            <h5>Synonmyms</h5>
+            <ul>
+              <li *ngFor="let s of r.synonyms">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.antonyms && r.antonyms.length > 0">
+            <h5>Antonyms</h5>
+            <ul>
+              <li *ngFor="let s of r.antonyms">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.rhymes && r.rhymes.length > 0">
+            <h5>Rhymes</h5>
+            <ul>
+              <li *ngFor="let s of r.rhymes">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.typeOf && r.typeOf.length > 0">
+            <h5>Type Of</h5>
+            <ul>
+              <li *ngFor="let s of r.typeOf">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.hasTypes && r.hasTypes.length > 0">
+            <h5>Has Types</h5>
+            <ul>
+              <li *ngFor="let s of r.hasTypes">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.partOf && r.partOf.length > 0">
+            <h5>Part of</h5>
+            <ul>
+              <li *ngFor="let s of r.partOf">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.hasParts && r.hasParts.length > 0">
+            <h5>Has parts</h5>
+            <ul>
+              <li *ngFor="let s of r.hasParts">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.instanceOf && r.instanceOf.length > 0">
+            <h5>Is instance of</h5>
+            <ul>
+              <li *ngFor="let s of r.instanceOf">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasInstances && r.hasInstances.length > 0">
+            <h5>Has instances</h5>
+            <ul>
+              <li *ngFor="let s of r.hasInstances">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.inRegion && r.inRegion.length > 0">
+            <h5>In region</h5>
+            <ul>
+              <li *ngFor="let s of r.inRegion">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.regionOf && r.regionOf.length > 0">
+            <h5>Region of</h5>
+            <ul>
+              <li *ngFor="let s of r.regionOf">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.usageOf && r.usageOf.length > 0">
+            <h5>Usage of</h5>
+            <ul>
+              <li *ngFor="let s of r.usageOf">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasUsages && r.hasUsages.length > 0">
+            <h5>Has usages</h5>
+            <ul>
+              <li *ngFor="let s of r.hasUsages">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.memberOf && r.memberOf.length > 0">
+            <h5>Member of</h5>
+            <ul>
+              <li *ngFor="let s of r.memberOf">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasMembers && r.hasMembers.length > 0">
+            <h5>Has members</h5>
+            <ul>
+              <li *ngFor="let s of r.hasMembers">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.substanceOf && r.substanceOf.length > 0">
+            <h5>Substance of</h5>
+            <ul>
+              <li *ngFor="let s of r.substanceOf">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasSubstances && r.hasSubstances.length > 0">
+            <h5>Has substances</h5>
+            <ul>
+              <li *ngFor="let s of r.hasSubstances">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasAttribute && r.hasAttribute.length > 0">
+            <h5>Has attributes</h5>
+            <ul>
+              <li *ngFor="let s of r.hasAttribute">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.inCategory && r.inCategory.length > 0">
+            <h5>In category</h5>
+            <ul>
+              <li *ngFor="let s of r.inCategory">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.hasCategories && r.hasCategories.length > 0">
+            <h5>Has categories</h5>
+            <ul>
+              <li *ngFor="let s of r.hasCategories">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.also && r.also.length > 0">
+            <h5>Also</h5>
+            <ul>
+              <li *ngFor="let s of r.also">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.pertainsTo && r.pertainsTo.length > 0">
+            <h5>Partains to</h5>
+            <ul>
+              <li *ngFor="let s of r.pertainsTo">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.similarTo && r.similarTo.length > 0">
+            <h5>Similar to</h5>
+            <ul>
+              <li *ngFor="let s of r.similarTo">{{s}}</li>
+            </ul>
+          </div>
+          <div *ngIf="r.entails && r.entails.length > 0">
+            <h5>Entails</h5>
+            <ul>
+              <li *ngFor="let s of r.entails">{{s}}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.derivation && r.derivation.length > 0">
+            <h5>Derivation</h5>
+            <ul>
+              <li *ngFor="let s of r.derivation">{{ s }}</li>
+            </ul>
+          </div>
+
+          <div *ngIf="r.examples && r.examples.length > 0">
+            <h5>Examples</h5>
+            <ul>
+              <li *ngFor="let s of r.examples">{{ s }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

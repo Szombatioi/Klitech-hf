@@ -19,10 +19,14 @@ export class HistoryService {
 
   saveHistory(element: HistoryElement){
     this.historyElements.push(element);
+    this.saveStorage();
+    console.log("History Element saved");
+  }
+
+  private saveStorage(){
     localStorage.removeItem(this.localstorage_key);
     const json = JSON.stringify(this.historyElements);
     localStorage.setItem("stored_items", json);
-    console.log("History Element saved");
   }
 
   loadHistory() : HistoryElement[]{
@@ -31,6 +35,7 @@ export class HistoryService {
 
   deleteHistoryElement(historyElement: HistoryElement){
     this.historyElements.splice(this.historyElements.indexOf(historyElement), 1);
+    this.saveStorage();
   }
 
   private _loadHistory(key: string = this.localstorage_key) : Observable<HistoryElement[]>{

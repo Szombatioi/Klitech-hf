@@ -7,6 +7,7 @@ import { Languages } from '../../models/languages.model';
 import { HistoryService } from '../../services/history.service';
 import { HistoryElement } from '../../models/history.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import { Tr } from '../../models/translatorResult.model';
 
 @Component({
   selector: 'translator',
@@ -15,7 +16,7 @@ import {MatSnackBar} from '@angular/material/snack-bar';
   providers: [TranslatorService]
 })
 export class TranslatorComponent implements OnInit{
-  constructor(private historyService: HistoryService, private translatorService: TranslatorService, private snack: MatSnackBar){
+  constructor(private translatorService: TranslatorService, private snack: MatSnackBar){
     this.fullLanguageNames = this.translatorService.languageMap;
   }
 
@@ -61,13 +62,15 @@ export class TranslatorComponent implements OnInit{
         }
         this.result = res.def[0].tr[0].text;
         this.alternatives = res.def[0].tr.slice(1).map(t => t.text);
-        this.historyService.saveHistory(new HistoryElement(
-          "Translation",
-          this.word,
-          [res.def[0].tr[0].text],
-        ));
+        this.translatorService.saveHistory(this.word, `${this.selectedSource}-${this.selectedDestination} → ${this.createWordList(res.def[0].tr)}`);
       }
     );
+  }
+
+  private createWordList(tr: Tr[]){
+    let arr: string[] = [];
+    for(let t of tr) arr.push(t.text);
+    return arr.join(",");
   }
 
   selectChanged(){
