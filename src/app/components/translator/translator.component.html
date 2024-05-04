@@ -25,8 +25,15 @@
         </div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col-md-2">
             <button (click)="translateWordTo()" class="btn btn-primary">Translate</button>
+        </div>
+        <div class="col-md-4"></div>
+        <div *ngIf="this.alternatives && this.alternatives.length > 0" class="col-md-6 border rounded">
+            <i>Also:</i>
+            <ul class="ml-2">
+                <li *ngFor="let a of alternatives">{{a}}</li>
+            </ul>
         </div>
     </div>
 </div>

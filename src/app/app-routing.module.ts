@@ -9,6 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MainComponent } from './main-component/main-component.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const routes: Route[] = [
   { path: 'translator', component: TranslatorComponent },
@@ -20,6 +21,9 @@ const routes: Route[] = [
   imports: [BrowserModule, RouterModule.forRoot(routes), HttpClientModule, FormsModule],
   declarations: [MainComponent, HistoryComponent, TranslatorComponent, DictionaryComponent, NavbarComponent],
   exports: [RouterModule],
-  bootstrap: [MainComponent]
+  bootstrap: [MainComponent],
+  providers: [
+    provideAnimationsAsync()
+  ]
 })
 export class AppRoutingModule { }

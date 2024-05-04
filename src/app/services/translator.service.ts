@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Language } from '../models/language.model';
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Languages } from '../models/languages.model';
 import { TranslatorResult } from '../models/translatorResult.model';
 
@@ -37,6 +37,7 @@ export class TranslatorService {
     ["no", "Norwegian"],
     ["pl", "Polish"],
     ["pt", "Portuguese"],
+    ["pt-BR", "Brazilian Portuguese"],
     ["ru", "Russian"],
     ["sk", "Slovak"],
     ["sv", "Swedish"],
