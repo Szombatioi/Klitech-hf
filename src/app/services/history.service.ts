@@ -13,7 +13,7 @@ export class HistoryService {
   constructor(){
     this._loadHistory().subscribe(res => {
       this.historyElements = res;
-      console.log(this.historyElements);
+      //console.log(this.historyElements);
     });
   }
 

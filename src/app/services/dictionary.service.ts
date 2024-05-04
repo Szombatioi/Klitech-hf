@@ -16,10 +16,11 @@ export class DictionaryService {
     })
   };
 
-  constructor(private historyService: HistoryService, private http: HttpClient) {}
 
+  constructor(private historyService: HistoryService, private http: HttpClient) {}
+  
   public getWordInfo(word: string, type: string = "") : Observable<DictionaryElement>{
-    return this.http.get<DictionaryElement>(`https://wordsapiv1.p.rapidapi.com/words/${word}${type ? "/"+type : ""}`, this.options);
+    return this.http.get<DictionaryElement>(`https://wordsapiv1.p.rapidapi.com/words/${word}${type === "" ? "" : "/"+type}`, this.options);
   }
 
   saveHistory(word: string, result: string){

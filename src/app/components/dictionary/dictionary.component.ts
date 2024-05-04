@@ -17,7 +17,7 @@ export class DictionaryComponent implements OnInit {
     ["Antonyms", "antonyms"],
     ["Examples", "examples"],
     ["Rhymes", "rhymes"],
-    ["Frequency", "frequency"],
+    // ["Frequency", "frequency"],
     ["Is A Type Of", "typeOf"],
     ["Has Types", "hasTypes"],
     ["Part Of", "partOf"],
@@ -42,24 +42,26 @@ export class DictionaryComponent implements OnInit {
   ]);
   dictionaryElement: DictionaryElement | undefined;
   word: string;
-  type: string;
+  type: string = "";
   constructor(private dictionaryService: DictionaryService) {}
 
   ngOnInit(): void {
-      this.type="Everything";
+      
   }
 
-  getOptions() : string[]{
+  getOptions(){
     return Array.from(this.types.keys());
   }
 
   lookUpWord(){
-    this.dictionaryService.getWordInfo(this.word, this.type).subscribe(
+    this.dictionaryService.getWordInfo(this.word, this.types.get(this.type)).subscribe(
       res => {
         this.dictionaryElement = res;
-        this.dictionaryElement.results.forEach(r => {
-          r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
-        });
+        if(this.dictionaryElement.results){
+          this.dictionaryElement.results.forEach(r => {
+            r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
+          });
+        }
         this.dictionaryService.saveHistory(this.word, this.createWordList());
       }
     );
