@@ -4,6 +4,7 @@ import { DictionaryElement } from '../../models/dictionaryElement.model';
 import { HistoryService } from '../../services/history.service';
 import { HistoryElement } from '../../models/history.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EMPTY, catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-dictionary',
@@ -14,7 +15,7 @@ export class DictionaryComponent implements OnInit {
   types: Map<string, string>;
   dictionaryElement: DictionaryElement | undefined;
   word: string;
-  type: string = "";
+  type: string = "Everything";
   isLoadingStage = true;
   constructor(private dictionaryService: DictionaryService, private snack: MatSnackBar) {}
 
@@ -33,18 +34,22 @@ export class DictionaryComponent implements OnInit {
       return;      
     }
 
-    this.dictionaryService.getWordInfo(this.word, this.types.get(this.type)).subscribe(
-      res => {
-        this.dictionaryElement = res;
-        if(this.dictionaryElement.results){
-          this.dictionaryElement.results.forEach(r => {
-            r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
-          });
+    this.dictionaryService.getWordInfo(this.word, this.types.get(this.type))
+      .pipe(catchError(e => {
+        this.snack.open("No result!", "Ok");
+        return EMPTY;
+      }))
+      .subscribe(
+        res => {
+          this.dictionaryElement = res;
+          if(this.dictionaryElement.results){
+            this.dictionaryElement.results.forEach(r => {
+              r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
+            });
+          }
+          this.dictionaryService.saveHistory(`${this.word} (${this.type})`, this.createWordList());
         }
-        this.dictionaryService.saveHistory(`${this.word} (${this.type})`, this.createWordList());
-      }
-    );
-    
+      );
   }
 
   createWordList(){

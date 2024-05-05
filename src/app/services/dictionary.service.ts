@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DictionaryElement } from '../models/dictionaryElement.model';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, catchError } from 'rxjs';
 import { HistoryService } from './history.service';
 import { HistoryElement } from '../models/history.model';
 
@@ -23,7 +23,6 @@ export class DictionaryService {
     ["Antonyms", "antonyms"],
     ["Examples", "examples"],
     ["Rhymes", "rhymes"],
-    // ["Frequency", "frequency"],
     ["Is A Type Of", "typeOf"],
     ["Has Types", "hasTypes"],
     ["Part Of", "partOf"],
@@ -38,7 +37,6 @@ export class DictionaryService {
     ["Has Members", "hasMembers"],
     ["Is A Substance Of", "substanceOf"],
     ["Has Substances", "hasSubstances"],
-    // ["Has Attribute", "hasAttribute"],
     ["In Category", "inCategory"],
     ["Has Categories", "hasCategories"],
     ["Also", "also"],
@@ -50,7 +48,9 @@ export class DictionaryService {
   constructor(private historyService: HistoryService, private http: HttpClient) {}
   
   public getWordInfo(word: string, type: string = "") : Observable<DictionaryElement>{
-    return this.http.get<DictionaryElement>(`https://wordsapiv1.p.rapidapi.com/words/${word}${type === "" ? "" : "/"+type}`, this.options);
+    return this.http.get<DictionaryElement>(`https://wordsapiv1.p.rapidapi.com/words/${word}${type === "" ? "" : "/"+type}`, this.options).pipe(
+      catchError(e => {return EMPTY;})
+    );
   }
 
   saveHistory(word: string, result: string[]){
