@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DictionaryService } from '../../services/dictionary.service';
 import { DictionaryElement } from '../../models/dictionaryElement.model';
-import { HistoryService } from '../../services/history.service';
-import { HistoryElement } from '../../models/history.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { EMPTY, catchError, throwError } from 'rxjs';
+import { EMPTY, catchError } from 'rxjs';
 
 @Component({
   selector: 'app-dictionary',

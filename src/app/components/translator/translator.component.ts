@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { TranslatorService } from '../../services/translator.service';
-import { Language } from '../../models/language.model';
-import { NavbarComponent } from '../navbar/navbar.component';
 import { Languages } from '../../models/languages.model';
-import { HistoryService } from '../../services/history.service';
-import { HistoryElement } from '../../models/history.model';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { Tr } from '../../models/translatorResult.model';
 
