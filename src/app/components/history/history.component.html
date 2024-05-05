@@ -1,29 +1,39 @@
-<div class="container m-2">
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Type</th>
-                <th scope="col">Word</th>
-                <th scope="col">Results</th>
-                <th scope="col">Date</th>
-                <th scope="col">Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            <ng-container *ngFor="let h of historyElements; let x = index">
+<div *ngIf="isLoadingStage">
+    Loading...
+</div>
+<div *ngIf="!isLoadingStage" class=" my-2">
+    <div class="m-2" *ngIf="historyElements.length === 0">
+        No history saved yet.
+    </div>
+    <div class="table-responsive" *ngIf="historyElements.length > 0">
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <th scope="col">{{x}}</th>
-                    <td>{{h.type}}</td>
-                    <td>{{h.word}}</td>
-                    <td>{{h.results}}</td> <!--TODO-->
-                    <td >{{formatDate(h.date)}}</td>
-                    <td>
-                        <button (click)="removeHistoryElement(h)" class="btn"><img src="../../../assets/trash.svg" alt=""/></button>
-                    </td>
+                    <th scope="col">#</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Word</th>
+                    <th scope="col">Results</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Delete</th>
                 </tr>
-            </ng-container>
-          </tbody>
-    </table>
-    <button (click)="clearHistory()" class="btn btn-primary">Delete all</button>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let h of historyElements; let x = index">
+                    <tr>
+                        <th scope="col">{{x+1}}</th>
+                        <td>{{h.type}}</td>
+                        <td>{{h.word}}</td>
+                        <td style="max-width: 50vw; word-wrap: break-word;">
+                            <div *ngFor="let r of h.results">{{r}}</div><br>
+                        </td>
+                        <td style="white-space: nowrap;">{{formatDate(h.date)}}</td>
+                        <td>
+                            <button (click)="deleteHistory(h)" class="btn"><img src="../../../assets/trash.svg" alt=""/></button>
+                        </td>
+                    </tr>
+                </ng-container>
+              </tbody>
+        </table>
+        <button (click)="clearHistory()" class="btn btn-primary">Delete all</button>
+    </div>
 </div>

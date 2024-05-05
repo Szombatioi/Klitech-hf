@@ -16,6 +16,36 @@ export class DictionaryService {
     })
   };
 
+  public types = new Map<string, string>([
+    ["Everything", ""],
+    ["Definitions", "definitions"],
+    ["Synonyms", "synonyms"],
+    ["Antonyms", "antonyms"],
+    ["Examples", "examples"],
+    ["Rhymes", "rhymes"],
+    // ["Frequency", "frequency"],
+    ["Is A Type Of", "typeOf"],
+    ["Has Types", "hasTypes"],
+    ["Part Of", "partOf"],
+    ["Has Parts", "hasParts"],
+    ["Is An Instance Of", "instanceOf"],
+    ["Has Instances", "hasInstances"],
+    ["In Region", "inRegion"],
+    ["Region Of", "regionOf"],
+    ["Usage Of", "usageOf"],
+    ["Has Usages", "hasUsages"],
+    ["Is A Member Of", "memberOf"],
+    ["Has Members", "hasMembers"],
+    ["Is A Substance Of", "substanceOf"],
+    ["Has Substances", "hasSubstances"],
+    // ["Has Attribute", "hasAttribute"],
+    ["In Category", "inCategory"],
+    ["Has Categories", "hasCategories"],
+    ["Also", "also"],
+    ["Pertains To", "pertainsTo"],
+    ["Similar To", "similarTo"],
+    ["Entails", "entails"],
+  ]);
 
   constructor(private historyService: HistoryService, private http: HttpClient) {}
   
@@ -23,7 +53,7 @@ export class DictionaryService {
     return this.http.get<DictionaryElement>(`https://wordsapiv1.p.rapidapi.com/words/${word}${type === "" ? "" : "/"+type}`, this.options);
   }
 
-  saveHistory(word: string, result: string){
+  saveHistory(word: string, result: string[]){
     this.historyService.saveHistory(new HistoryElement(
       "Dictionary lookup",
       word,

@@ -81,7 +81,7 @@ export class TranslatorService {
     this.historyService.saveHistory(new HistoryElement(
       "Translation",
       word,
-      result,
+      [result],
     ));
     console.log("Saved translation");
   }

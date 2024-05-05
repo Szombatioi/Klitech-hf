@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const routes: Route[] = [
+  { path: '', redirectTo: '/translator', pathMatch: 'full'},
   { path: 'translator', component: TranslatorComponent },
   { path: 'dictionary', component: DictionaryComponent},
   { path: 'history', component: HistoryComponent}

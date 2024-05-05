@@ -3,6 +3,7 @@ import { DictionaryService } from '../../services/dictionary.service';
 import { DictionaryElement } from '../../models/dictionaryElement.model';
 import { HistoryService } from '../../services/history.service';
 import { HistoryElement } from '../../models/history.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dictionary',
@@ -10,43 +11,16 @@ import { HistoryElement } from '../../models/history.model';
   styleUrl: './dictionary.component.css',
 })
 export class DictionaryComponent implements OnInit {
-  types: Map<string, string> = new Map<string, string>([
-    ["Everything", ""],
-    ["Definitions", "definitions"],
-    ["Synonyms", "synonyms"],
-    ["Antonyms", "antonyms"],
-    ["Examples", "examples"],
-    ["Rhymes", "rhymes"],
-    // ["Frequency", "frequency"],
-    ["Is A Type Of", "typeOf"],
-    ["Has Types", "hasTypes"],
-    ["Part Of", "partOf"],
-    ["Has Parts", "hasParts"],
-    ["Is An Instance Of", "instanceOf"],
-    ["Has Instances", "hasInstances"],
-    ["In Region", "inRegion"],
-    ["Region Of", "regionOf"],
-    ["Usage Of", "usageOf"],
-    ["Has Usages", "hasUsages"],
-    ["Is A Member Of", "memberOf"],
-    ["Has Members", "hasMembers"],
-    ["Is A Substance Of", "substanceOf"],
-    ["Has Substances", "hasSubstances"],
-    ["Has Attribute", "hasAttribute"],
-    ["In Category", "inCategory"],
-    ["Has Categories", "hasCategories"],
-    ["Also", "also"],
-    ["Pertains To", "pertainsTo"],
-    ["Similar To", "similarTo"],
-    ["Entails", "entails"],
-  ]);
+  types: Map<string, string>;
   dictionaryElement: DictionaryElement | undefined;
   word: string;
   type: string = "";
-  constructor(private dictionaryService: DictionaryService) {}
+  isLoadingStage = true;
+  constructor(private dictionaryService: DictionaryService, private snack: MatSnackBar) {}
 
   ngOnInit(): void {
-      
+      this.types = this.dictionaryService.types;
+      this.isLoadingStage = false;
   }
 
   getOptions(){
@@ -54,6 +28,11 @@ export class DictionaryComponent implements OnInit {
   }
 
   lookUpWord(){
+    if(this.word === "" || this.word === undefined || this.type === undefined || this.type === ""){
+      this.snack.open("Invalid inputs!", "Ok");
+      return;      
+    }
+
     this.dictionaryService.getWordInfo(this.word, this.types.get(this.type)).subscribe(
       res => {
         this.dictionaryElement = res;
@@ -62,13 +41,39 @@ export class DictionaryComponent implements OnInit {
             r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
           });
         }
-        this.dictionaryService.saveHistory(this.word, this.createWordList());
+        this.dictionaryService.saveHistory(`${this.word} (${this.type})`, this.createWordList());
       }
     );
     
   }
 
   createWordList(){
-    return `$Syllables: ${this.dictionaryElement?.syllables}\nFrequency: ${this.dictionaryElement?.frequency}\nPronunciation: ${this.dictionaryElement?.pronunciation}\n`;
+    let result: string[] = [];
+    if(this.dictionaryElement!.syllables){
+      result.push(`Syllables: ${this.dictionaryElement!.syllables.list.join(",")}\n`);
+    }
+    if(this.dictionaryElement!.pronunciation){
+      result.push(`Pronunciation: ${this.dictionaryElement!.pronunciation.all}` + "\n");
+    }
+    if(this.dictionaryElement!.frequency){
+      result.push(`Pronunciation: ${this.dictionaryElement!.frequency}` + "\n");
+    }
+    if(this.dictionaryElement!.definitions){
+      for(let d of this.dictionaryElement!.definitions){
+        result.push(`Definition: ${d.definition}, part of speech: ${d.partOfSpeech}` + "\n");
+      }
+    }
+    if(this.dictionaryElement!.rhymes){
+      result.push(`Rhymes: ${this.dictionaryElement!.rhymes.all.join(",")}` + "\n");
+    }
+
+    for(let prop in this.dictionaryElement){
+      const p = (this.dictionaryElement as any)[prop];
+      if(this.dictionaryElement.hasOwnProperty(prop) && p && 
+        Array.isArray(p) && p.every(item => typeof item === "string")){
+          result.push(p.length > 0 ? `${prop}: ${p.join(",")}` + "\n" : "No results.");
+      }
+    }
+    return result;
   }
 }

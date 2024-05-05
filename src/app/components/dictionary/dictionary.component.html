@@ -1,4 +1,7 @@
-<div class="container p-2">
+<div *ngIf="isLoadingStage">
+  Loading...
+</div>
+<div *ngIf="!isLoadingStage" class="container p-2 my-2">
   <div class="row">
     <div class="col-md-6">
       <input
@@ -14,191 +17,197 @@
       </select>
     </div>
   </div>
-  <div class="row">
+  <div class="row my-2">
     <div class="col-md-2">
       <button (click)="lookUpWord()" class="btn btn-primary">Find</button>
     </div>
+    <hr class="my-2">
   </div>
 
   <div class="row">
     <div *ngIf="dictionaryElement">
       <div *ngIf="dictionaryElement.definitions">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Definitions for <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
-          <li *ngFor="let x of dictionaryElement.definitions">{{ x }}</li>
+          <li class="mb-1" *ngFor="let x of dictionaryElement.definitions">
+            <div>
+              <u>Definition:</u> {{ x.definition }}<br/>
+              <b>Part of speech:</b> {{x.partOfSpeech}}
+            </div>
+          </li>
         </ul>
         <div *ngIf="dictionaryElement.definitions.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.synonyms">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Synonyms for <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.synonyms">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.synonyms.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.antonyms">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Antonyms for <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.antonyms">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.antonyms.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.examples">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Examples for <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.examples">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.examples.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.rhymes">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Rhymes for <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
-          <li *ngFor="let x of dictionaryElement.rhymes">{{ x }}</li>
+          <li *ngFor="let x of dictionaryElement.rhymes.all">{{ x }}</li>
         </ul>
-        <div *ngIf="dictionaryElement.rhymes.length === 0"><i>No results.</i></div>
+        <div *ngIf="dictionaryElement.rhymes.all.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.typeOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is type of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.typeOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.typeOf.length === 0">No results.</div>
       </div>
       <div *ngIf="dictionaryElement.hasTypes">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has types of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasTypes">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasTypes.length === 0">No results.</div>
       </div>
       <div *ngIf="dictionaryElement.partOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is part of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.partOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.partOf.length === 0">No results.</div>
       </div>
       <div *ngIf="dictionaryElement.hasParts">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has parts of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasParts">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasParts.length === 0">No results.</div>
       </div>
       <div *ngIf="dictionaryElement.instanceOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is instance of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.instanceOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.instanceOf.length === 0">No results.</div>
       </div>
       <div *ngIf="dictionaryElement.hasInstances">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has instances</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasInstances">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasInstances.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.inRegion">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is in region</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.inRegion">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.inRegion.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.regionOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is a region of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.regionOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.regionOf.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.usageOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5>Usage of <mark>{{ dictionaryElement.word }}</mark></h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.usageOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.usageOf.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.hasUsages">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has usages</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasUsages">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasUsages.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.memberOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is member of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.memberOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.memberOf.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.hasMembers">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has members of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasMembers">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasMembers.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.substanceOf">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is substance of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.substanceOf">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.substanceOf.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.hasSubstances">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has substances of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasSubstances">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasSubstances.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.hasAttribute">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has attributes of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasAttribute">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasAttribute.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.inCategory">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is in category</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.inCategory">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.inCategory.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.hasCategories">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> has categories of</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.hasCategories">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.hasCategories.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.also">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is also</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.also">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.also.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.pertainsTo">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> pertains to</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.pertainsTo">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.pertainsTo.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.similarTo">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> is similar to</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.similarTo">{{ x }}</li>
         </ul>
         <div *ngIf="dictionaryElement.similarTo.length === 0"><i>No results.</i></div>
       </div>
       <div *ngIf="dictionaryElement.entails">
-        <h5>Synonyms for {{ dictionaryElement.word }}</h5>
+        <h5><mark>{{ dictionaryElement.word }}</mark> entails</h5>
         <ul>
           <li *ngFor="let x of dictionaryElement.entails">{{ x }}</li>
         </ul>
@@ -208,7 +217,7 @@
       <!--Ha everything van beállítva = van results-->
       <div *ngIf="dictionaryElement.results">
         <div *ngIf="dictionaryElement.word" class="border rounded p-2 m-2">
-          <h3>Word: {{ dictionaryElement.word }}</h3>
+          <h3>Word: <mark>{{ dictionaryElement.word }}</mark></h3>
           <span *ngIf="dictionaryElement.syllables">
             <h5>Syllables</h5>
             <ul>
@@ -240,12 +249,11 @@
             *ngFor="let r of dictionaryElement.results; let i = index"
             class="border rounded p-2 m-2"
           >
-            <h4>Result {{ i + 1 }}</h4>
+            <h3>Result {{ i + 1 }}</h3>
 
             <h5>Definition:</h5>
-            <mark>{{ r.definition }}</mark
-            ><br />
-            <b>Part of speech: </b> {{ r.partOfSpeech }}
+            <mark>{{ r.definition }}</mark>
+            <div class="mt-1"><b>Part of speech: </b> {{ r.partOfSpeech }}</div>
 
             <div *ngIf="r.synonyms && r.synonyms.length > 0">
               <h5>Synonmyms</h5>

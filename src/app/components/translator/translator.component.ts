@@ -26,9 +26,11 @@ export class TranslatorComponent implements OnInit{
       this.selectedSource = languages.languages[0].source;
       this.selectableDestinations = languages.getDestinationsFor(this.selectedSource)!;
       this.selectedDestination = this.selectableDestinations[0];
+      this.isLoadingStage = false;
     });
   }
   
+  isLoadingStage = true;
   languages: Observable<Languages>;
   fullLanguageNames: Map<string, string>;
   selectedSource: string;

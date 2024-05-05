@@ -8,10 +8,12 @@ import { HistoryElement } from '../../models/history.model';
 })
 export class HistoryComponent implements OnInit{
   historyElements: HistoryElement[] = [];
+  isLoadingStage = true;
   constructor(private historyService: HistoryService){}
 
   ngOnInit(): void {
     this.historyElements = this.historyService.loadHistory();
+    this.isLoadingStage = false;
   }
 
   deleteHistory(historyElement: HistoryElement){
@@ -20,13 +22,10 @@ export class HistoryComponent implements OnInit{
 
   clearHistory() { 
     this.historyService.clearHistory();
-   }
+    this.historyElements = [];
+  }
 
-   formatDate(d: Date): string{
+  formatDate(d: Date): string{
     return new Date(d).toLocaleDateString();
-   }
-
-   removeHistoryElement(h: HistoryElement){
-    this.historyService.deleteHistoryElement(h);
-   }
+  }
 }
