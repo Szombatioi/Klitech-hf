@@ -1,3 +1,7 @@
+/**
+ * These models were converted from the Yandex API's json response using https://transform.tools/json-to-typescript
+ */
+
 export interface TranslatorResult {
     head: Head
     def: Def[]

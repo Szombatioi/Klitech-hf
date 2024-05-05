@@ -1,3 +1,7 @@
+/**
+ * These models were converted from the WordsAPI API's json response using https://transform.tools/json-to-typescript and was extended for the various endpoints.
+ */
+
 export interface DictionaryElement{
     word: string
     results?: Result[]

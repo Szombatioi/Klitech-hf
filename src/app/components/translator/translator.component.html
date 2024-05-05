@@ -1,7 +1,4 @@
-<!-- <p *ngFor="let l of languages">{{l}}</p> -->
-
-<!-- <p *ngFor="let l of (languages | async)?.languages">{{l.source}}</p> -->
-
+<h1 class="text-center">Translator</h1>
 <div *ngIf="isLoadingStage">
     Loading...
 </div>
@@ -30,7 +27,7 @@
     </div>
     <div class="row">
         <div class="col-md-2">
-            <button (click)="translateWordTo()" class="btn btn-primary">Translate</button>
+            <button (click)="translateWord()" class="btn btn-primary">Translate</button>
         </div>
         <div class="col-md-4"></div>
         <div *ngIf="this.alternatives && this.alternatives.length > 0" class="col-md-6 border rounded">

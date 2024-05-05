@@ -5,6 +5,4 @@ import { NavbarComponent } from '../components/navbar/navbar.component';
   selector: 'app',
   templateUrl: './main-component.component.html',
 })
-export class MainComponent {
-
-}
+export class MainComponent {}

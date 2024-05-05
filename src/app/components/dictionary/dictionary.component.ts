@@ -12,9 +12,21 @@ import { EMPTY, catchError, throwError } from 'rxjs';
   styleUrl: './dictionary.component.css',
 })
 export class DictionaryComponent implements OnInit {
+  /**
+   * The available types for lookup.
+   */
   types: Map<string, string>;
+  /**
+   * The result of a lookup.
+   */
   dictionaryElement: DictionaryElement | undefined;
+  /**
+   * The word we want to search. Binded with the <input> element.
+   */
   word: string;
+  /**
+   * The type of the lookup. Binded with the <select> element.
+   */
   type: string = "Everything";
   isLoadingStage = true;
   constructor(private dictionaryService: DictionaryService, private snack: MatSnackBar) {}
@@ -24,11 +36,19 @@ export class DictionaryComponent implements OnInit {
       this.isLoadingStage = false;
   }
 
+  /**
+   * This method returns the array of the available types' keys. We may use this function for the <select> element's <option> fields.
+   * @returns Returns the array of the lookup type names.
+   */
   getOptions(){
     return Array.from(this.types.keys());
   }
 
+  /**
+   * The method calls the service to lookup the binded word with the binded type.
+   */
   lookUpWord(){
+    //Checking inputs. If any of them are wrong, we open a snackbar.
     if(this.word === "" || this.word === undefined || this.type === undefined || this.type === ""){
       this.snack.open("Invalid inputs!", "Ok");
       return;      
@@ -42,16 +62,23 @@ export class DictionaryComponent implements OnInit {
       .subscribe(
         res => {
           this.dictionaryElement = res;
+          //If there are results, we take each definition and turn their first character uppercase, since the results come with a lowercase first character.
           if(this.dictionaryElement.results){
             this.dictionaryElement.results.forEach(r => {
               r.definition = r.definition.charAt(0).toUpperCase() + r.definition.slice(1);
             });
           }
+          //Finally we save the history.
           this.dictionaryService.saveHistory(`${this.word} (${this.type})`, this.createWordList());
         }
       );
   }
 
+  /**
+   * This method is used when we save a history element.
+   * We iterate through each property of the given result and append the results with their content.
+   * @returns Return the formatted result of the dictionary element.
+   */
   createWordList(){
     let result: string[] = [];
     if(this.dictionaryElement!.syllables){
